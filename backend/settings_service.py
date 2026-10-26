@@ -20,7 +20,8 @@ STUDIO_ROOT = (
     else (Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent.parent)
 )
 CONFIG_DIR = STUDIO_ROOT / "config"
-SETTINGS_FILE = CONFIG_DIR / "studio_settings.json"
+SETTINGS_TEMPLATE_FILE = CONFIG_DIR / "studio_settings.json"
+SETTINGS_FILE = CONFIG_DIR / "studio_settings.local.json"
 CACHE_DIR = STUDIO_ROOT / ".studio_cache"
 PROJECTS_DIR = STUDIO_ROOT / "projects"
 EXPORTS_DIR = STUDIO_ROOT / "exports"
@@ -89,10 +90,10 @@ def load_settings() -> Dict[str, Any]:
     for k, v in detected.items():
         if v:
             data[k] = v
-    file_existed = SETTINGS_FILE.is_file()
-    if file_existed:
+    src_file = SETTINGS_FILE if SETTINGS_FILE.is_file() else (SETTINGS_TEMPLATE_FILE if SETTINGS_TEMPLATE_FILE.is_file() else None)
+    if src_file is not None:
         try:
-            loaded = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
+            loaded = json.loads(src_file.read_text(encoding="utf-8"))
             if isinstance(loaded, dict):
                 for k, v in loaded.items():
                     if k in ("anomaly_path", "mo2_path", "addons_input_path", "mods_output_path") and not v:

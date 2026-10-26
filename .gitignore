@@ -25,3 +25,4 @@ config/custom_quest_templates.json
 tools/Modelfile.qwen-clerk
 tools/qwen_clerk.py
 config/studio_settings.local.json
+tools/win_runtime/

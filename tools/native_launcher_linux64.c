@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
         printf("[Anomaly Studio v0.1.0-alpha] Tip: Pass '--web' or '--dev' to run the 127.0.0.1:8780 Dev/Debug & macOS Web Server edition.\n");
         fflush(stdout);
 
-        char native_script[PATH_MAX];
+        char native_script[PATH_MAX + 64];
         snprintf(native_script, sizeof(native_script), "%s/backend/native_desktop_app.py", exe_path);
         if (self_test_arg) {
             execlp("python3", "python3", native_script, self_test_arg, NULL);
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
 
     child_pid = fork();
     if (child_pid == 0) {
-        char srv_script[PATH_MAX];
+        char srv_script[PATH_MAX + 64];
         snprintf(srv_script, sizeof(srv_script), "%s/backend/server.py", exe_path);
         execlp("python3", "python3", srv_script, NULL);
         perror("execlp python3");

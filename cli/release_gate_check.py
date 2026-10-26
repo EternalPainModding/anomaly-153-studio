@@ -33,7 +33,7 @@ def run_static_gate() -> int:
     tracked = subprocess.check_output(["git", "ls-files"], cwd=ROOT, text=True).splitlines()
 
     for rel in tracked:
-        if rel == "cli/release_gate_check.py":
+        if rel in ("cli/release_gate_check.py", "cli/build_releases.py"):
             continue
         fp = ROOT / rel
         if fp.is_symlink():
@@ -273,11 +273,22 @@ def run_full_best_practices_qa() -> int:
     failed_ui = [k for k, v in qa_entry.items() if not v]
     assert not failed_ui, f"Stage 10 UI tests failed: {failed_ui} in {qa_entry}"
     print(f"[STAGE 10 PASS] Real Headless Firefox (Gecko) Live DOM & Mouse Event Suite: {json.dumps(qa_entry)}")
-    print("=== ALL 10 SDK, 3D-EDITOR & QUEST-EDITOR BEST-PRACTICES QA STAGES PASSED ===")
+    # Stage 11: Standalone Release Archive Verification (Linux .tar.gz + Windows .zip)
+    import build_releases
+    rc_rel = build_releases.verify_release_archives()
+    assert rc_rel == 0, "Stage 11 failed: Release archives did not pass verification!"
+    print("[STAGE 11 PASS] Standalone Release Packages (Linux .tar.gz & Windows .zip) verified & self-tested.")
+    print("=== ALL 11 SDK, 3D-EDITOR, QUEST-EDITOR & RELEASE ARCHIVE QA STAGES PASSED ===")
     return 0
 
 
 if __name__ == "__main__":
     if "--full-qa" in sys.argv:
         sys.exit(run_full_best_practices_qa())
+    if "--verify-releases" in sys.argv:
+        rc = run_static_gate()
+        if rc != 0:
+            sys.exit(rc)
+        import build_releases
+        sys.exit(build_releases.verify_release_archives())
     sys.exit(run_static_gate())

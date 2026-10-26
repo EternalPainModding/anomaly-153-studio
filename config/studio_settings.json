@@ -1,11 +1,14 @@
 {
   "anomaly_path": "",
   "mo2_path": "",
-  "addons_input_path": "",
+  "addons_input_path": "./addons_input",
   "mods_output_path": "./exports",
+  "active_project": "default",
   "language": "en",
+  "autosave_interval_sec": 15,
+  "strict_db0_only": true,
+  "first_run_completed": false,
   "theme": "stalker-dark",
   "autosave_enabled": true,
-  "autosave_interval_sec": 15,
   "setup_completed": false
 }
