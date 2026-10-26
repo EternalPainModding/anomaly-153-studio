@@ -1,0 +1,27 @@
+# Anomaly Studio runtime caches & mounted .db0 VFS (never commit game files or local machine symlinks!)
+.studio_cache/
+_tex_cache/
+tools/_unpacked
+tools/_re_index
+_re_index
+anomaly_studio
+index/spawns_parsed
+exports/
+projects/*/autosave/
+projects/*/gamedata/
+projects/*/snapshots/
+projects/*/builds/
+__pycache__/
+*.pyc
+*.pyo
+*.pdb
+*.lib
+AnomalyStudio
+AnomalyStudio.exe
+config/custom_quest_templates.json
+
+.rea_memory/
+.studio_notes/
+tools/Modelfile.qwen-clerk
+tools/qwen_clerk.py
+config/studio_settings.local.json

@@ -1,0 +1,587 @@
+{
+  "90": {
+    "id": 90,
+    "name": "creatures/actor",
+    "desc": "",
+    "flags": "0x40002112",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "85": {
+    "id": 85,
+    "name": "creatures/hoof",
+    "desc": "",
+    "flags": "0x40002112",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "1": {
+    "id": 1,
+    "name": "creatures/human",
+    "desc": "",
+    "flags": "0x40002112",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "91": {
+    "id": 91,
+    "name": "creatures/human_head",
+    "desc": "",
+    "flags": "0x40002112",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "58": {
+    "id": 58,
+    "name": "creatures/large",
+    "desc": "",
+    "flags": "0x40002112",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "63": {
+    "id": 63,
+    "name": "creatures/medium",
+    "desc": "",
+    "flags": "0x40002112",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "92": {
+    "id": 92,
+    "name": "creatures/phantom",
+    "desc": "",
+    "flags": "0x20002D02",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "64": {
+    "id": 64,
+    "name": "creatures/small",
+    "desc": "",
+    "flags": "0x40002112",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "0": {
+    "id": 0,
+    "name": "default",
+    "desc": "",
+    "flags": "0x40002010",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "83": {
+    "id": 83,
+    "name": "default_object",
+    "desc": "",
+    "flags": "0x40002116",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "4": {
+    "id": 4,
+    "name": "materials/asphalt",
+    "desc": "",
+    "flags": "0x40000018",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "18": {
+    "id": 18,
+    "name": "materials/bricks",
+    "desc": "",
+    "flags": "0x40000016",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "37": {
+    "id": 37,
+    "name": "materials/bush",
+    "desc": "",
+    "flags": "0x20002C82",
+    "friction": 0.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "95": {
+    "id": 95,
+    "name": "materials/bush_sux",
+    "desc": "",
+    "flags": "0x20002C82",
+    "friction": 0.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "81": {
+    "id": 81,
+    "name": "materials/cloth",
+    "desc": "",
+    "flags": "0x40002018",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "3": {
+    "id": 3,
+    "name": "materials/concrete",
+    "desc": "",
+    "flags": "0x40000018",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "88": {
+    "id": 88,
+    "name": "materials/death",
+    "desc": "",
+    "flags": "0x20002C80",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "10": {
+    "id": 10,
+    "name": "materials/dirt",
+    "desc": "",
+    "flags": "0x40002010",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "7": {
+    "id": 7,
+    "name": "materials/earth",
+    "desc": "",
+    "flags": "0x40002018",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "93": {
+    "id": 93,
+    "name": "materials/earth_death",
+    "desc": "",
+    "flags": "0x40002018",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "94": {
+    "id": 94,
+    "name": "materials/earth_slide",
+    "desc": "",
+    "flags": "0xC0002018",
+    "friction": 0.3,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "80": {
+    "id": 80,
+    "name": "materials/fake",
+    "desc": "",
+    "flags": "0x20003C80",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.7
+  },
+  "82": {
+    "id": 82,
+    "name": "materials/fake_ladders",
+    "desc": "",
+    "flags": "0x20002C20",
+    "friction": 1.0,
+    "damping": 0.5,
+    "flotation": 1.0
+  },
+  "98": {
+    "id": 98,
+    "name": "materials/fake_ladders_woods",
+    "desc": "",
+    "flags": "0x20002C20",
+    "friction": 1.0,
+    "damping": 0.5,
+    "flotation": 1.0
+  },
+  "99": {
+    "id": 99,
+    "name": "materials/fake_slide",
+    "desc": "",
+    "flags": "0xA0002C00",
+    "friction": 0.1,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "12": {
+    "id": 12,
+    "name": "materials/flooring_tile",
+    "desc": "",
+    "flags": "0x4000021C",
+    "friction": 1.0,
+    "damping": 0.7,
+    "flotation": 0.7
+  },
+  "6": {
+    "id": 6,
+    "name": "materials/glass",
+    "desc": "",
+    "flags": "0x40000012",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "15": {
+    "id": 15,
+    "name": "materials/grass",
+    "desc": "",
+    "flags": "0x40002010",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "8": {
+    "id": 8,
+    "name": "materials/gravel",
+    "desc": "",
+    "flags": "0x4000201C",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "5": {
+    "id": 5,
+    "name": "materials/metal",
+    "desc": "",
+    "flags": "0x4000001C",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "34": {
+    "id": 34,
+    "name": "materials/metal_pipe",
+    "desc": "",
+    "flags": "0x40000016",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "13": {
+    "id": 13,
+    "name": "materials/metal_plate",
+    "desc": "",
+    "flags": "0x4000001E",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "97": {
+    "id": 97,
+    "name": "materials/occ",
+    "desc": "",
+    "flags": "0x20003C80",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.7
+  },
+  "16": {
+    "id": 16,
+    "name": "materials/sand",
+    "desc": "",
+    "flags": "0x40002018",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "48": {
+    "id": 48,
+    "name": "materials/setka_rabica",
+    "desc": "",
+    "flags": "0x20002C46",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "49": {
+    "id": 49,
+    "name": "materials/shifer",
+    "desc": "",
+    "flags": "0x40000056",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "53": {
+    "id": 53,
+    "name": "materials/stucco",
+    "desc": "",
+    "flags": "0x4000001A",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "60": {
+    "id": 60,
+    "name": "materials/tin",
+    "desc": "",
+    "flags": "0x40000006",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "39": {
+    "id": 39,
+    "name": "materials/tree_trunk",
+    "desc": "",
+    "flags": "0x40002014",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "11": {
+    "id": 11,
+    "name": "materials/water",
+    "desc": "",
+    "flags": "0xA0002E82",
+    "friction": 0.5,
+    "damping": 0.5,
+    "flotation": 0.1
+  },
+  "96": {
+    "id": 96,
+    "name": "materials/water_radiation",
+    "desc": "",
+    "flags": "0x20002C82",
+    "friction": 0.5,
+    "damping": 0.5,
+    "flotation": 0.1
+  },
+  "2": {
+    "id": 2,
+    "name": "materials/wood",
+    "desc": "",
+    "flags": "0x6000201E",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "19": {
+    "id": 19,
+    "name": "materials/wooden_board",
+    "desc": "",
+    "flags": "0x40002016",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "71": {
+    "id": 71,
+    "name": "objects/barrel",
+    "desc": "",
+    "flags": "0x40000112",
+    "friction": 1.5,
+    "damping": 1.0,
+    "flotation": 0.75
+  },
+  "101": {
+    "id": 101,
+    "name": "objects/bolt",
+    "desc": "",
+    "flags": "0x40000900",
+    "friction": 0.3,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "70": {
+    "id": 70,
+    "name": "objects/bottle",
+    "desc": "",
+    "flags": "0x40000116",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "38": {
+    "id": 38,
+    "name": "objects/bullet",
+    "desc": "",
+    "flags": "0x40000100",
+    "friction": 0.3,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "61": {
+    "id": 61,
+    "name": "objects/car_cabine",
+    "desc": "",
+    "flags": "0x40000112",
+    "friction": 0.3,
+    "damping": 2.0,
+    "flotation": 1.0
+  },
+  "75": {
+    "id": 75,
+    "name": "objects/car_wheel",
+    "desc": "",
+    "flags": "0x4000011A",
+    "friction": 1.0,
+    "damping": 2.0,
+    "flotation": 2.0
+  },
+  "65": {
+    "id": 65,
+    "name": "objects/clothes",
+    "desc": "",
+    "flags": "0x4000011A",
+    "friction": 0.8,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "78": {
+    "id": 78,
+    "name": "objects/concrete_box",
+    "desc": "",
+    "flags": "0x40000107",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "69": {
+    "id": 69,
+    "name": "objects/dead_body",
+    "desc": "",
+    "flags": "0x40000112",
+    "friction": 0.5,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "77": {
+    "id": 77,
+    "name": "objects/fuel_can",
+    "desc": "",
+    "flags": "0x40000107",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "86": {
+    "id": 86,
+    "name": "objects/glass",
+    "desc": "",
+    "flags": "0x00000113",
+    "friction": 1.0,
+    "damping": 0.5,
+    "flotation": 0.8
+  },
+  "79": {
+    "id": 79,
+    "name": "objects/knife",
+    "desc": "",
+    "flags": "0x40000102",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "76": {
+    "id": 76,
+    "name": "objects/large_furniture",
+    "desc": "",
+    "flags": "0x40002113",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "74": {
+    "id": 74,
+    "name": "objects/large_metal_trash",
+    "desc": "",
+    "flags": "0x40000116",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "22": {
+    "id": 22,
+    "name": "objects/large_weapon",
+    "desc": "",
+    "flags": "0x40000100",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.5
+  },
+  "72": {
+    "id": 72,
+    "name": "objects/metal_box",
+    "desc": "",
+    "flags": "0x40000116",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "84": {
+    "id": 84,
+    "name": "objects/monster_body",
+    "desc": "",
+    "flags": "0x40000112",
+    "friction": 0.5,
+    "damping": 1.0,
+    "flotation": 0.8
+  },
+  "100": {
+    "id": 100,
+    "name": "objects/shell",
+    "desc": "",
+    "flags": "0x40000984",
+    "friction": 0.5,
+    "damping": 0.8,
+    "flotation": 1.0
+  },
+  "66": {
+    "id": 66,
+    "name": "objects/small_box",
+    "desc": "",
+    "flags": "0x40000107",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "73": {
+    "id": 73,
+    "name": "objects/small_metal_trash",
+    "desc": "",
+    "flags": "0x40000116",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  },
+  "67": {
+    "id": 67,
+    "name": "objects/small_weapon",
+    "desc": "",
+    "flags": "0x40000102",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 0.5
+  },
+  "24": {
+    "id": 24,
+    "name": "objects/tin_can",
+    "desc": "",
+    "flags": "0x40000102",
+    "friction": 1.0,
+    "damping": 1.0,
+    "flotation": 1.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "format": "project.anomaly",
+  "project_id": "default",
+  "title": "Default Anomaly Mod Project",
+  "version": "0.1.0",
+  "author": "EternalPain",
+  "target_engine": "S.T.A.L.K.E.R. Anomaly 1.5.3",
+  "archive_name": "zzz_qa_best_practices.db0",
+  "description": "Standalone Anomaly 1.5.3 mod project with read-only base .db0 VFS.",
+  "created_at": "2026-10-26 17:51:30",
+  "updated_at": "2026-10-26 18:59:39",
+  "entry_level": "l01_escape",
+  "entry_campaign": "tm_escape.ltx",
+  "entry_dialog": "inf_trader_buy_transitions"
+}

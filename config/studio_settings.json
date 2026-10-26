@@ -1,0 +1,11 @@
+{
+  "anomaly_path": "",
+  "mo2_path": "",
+  "addons_input_path": "",
+  "mods_output_path": "./exports",
+  "language": "en",
+  "theme": "stalker-dark",
+  "autosave_enabled": true,
+  "autosave_interval_sec": 15,
+  "setup_completed": false
+}

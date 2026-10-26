@@ -1,0 +1,42 @@
+{
+  "tasks": {
+    "custom_quest_37": {
+      "task_id": "custom_quest_37",
+      "title_id": "st_custom_quest_37_title",
+      "descr_id": "st_custom_quest_37_descr",
+      "title_text": "New Custom Anomaly Task (custom_quest_37)",
+      "descr_text": "Retrieve the target item or complete the objective in the Zone.",
+      "title_ru": "Новое задание в Зоне (custom_quest_37)",
+      "descr_ru": "Выполните поручение в Зоне.",
+      "compiled_ltx": "[custom_quest_37]\nicon = ui_inGame2_Put_v_pripyat\nstoryline = false\nprior = 25\ntitle = st_custom_quest_37_title\ndescr = st_custom_quest_37_descr\ntarget = {=actor_has_item(quest_case_01)} esc_2_12_stalker_wolf, esc_smart_terrain_7_11\nstatus_functor = fetch_task_Need_return\ncondlist_0 = {=actor_has_item(quest_case_01) =talking_to_actor(esc_2_12_stalker_wolf)} complete\non_complete = %=reward_random_money(4500:6000) =reward_stash(true) =inc_faction_goodwill_to_actor(stalker:50) =remove_item(quest_case_01)% +custom_quest_37_done\n"
+    },
+    "task_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5": {
+      "task_id": "task_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5",
+      "title_id": "agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5_name",
+      "descr_id": "agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5_text",
+      "title_text": "Collect Expedition Reports",
+      "descr_text": "I've been tasked by Colonel Kuznetsov to bring some mysterious reports back to base.",
+      "title_ru": "Под грифом «секретно»",
+      "descr_ru": "Полковник рвёт и мечет... Часовые проспали, как какие-то ушлые сталкеры выкрали довольно деликатные документы. Никогда такого не было, и вот опять...\\n \\nНеобходимо найти и вернуть украденные документы как можно скорее - Кузнецов ждёт, а ждать он не любит.",
+      "compiled_ltx": "[task_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5]\nicon = ui_inGame2_Put_v_pripyat\nstoryline = false\nprior = 25\ntitle = agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5_name\ndescr = agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5_text\ntarget = {=actor_has_item(quest_case_01)} esc_2_12_stalker_wolf, esc_smart_terrain_7_11\nstatus_functor = fetch_task_Need_return\ncondlist_0 = {=actor_has_item(quest_case_01) =talking_to_actor(esc_2_12_stalker_wolf)} complete\non_complete = %=reward_random_money(4500:6000) =reward_stash(true) =inc_faction_goodwill_to_actor(stalker:50) =remove_item(quest_case_01)% +task_agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5_done\n"
+    }
+  },
+  "strings": {
+    "st_custom_quest_37_title": {
+      "eng": "New Custom Anomaly Task (custom_quest_37)",
+      "rus": "Новое задание в Зоне (custom_quest_37)"
+    },
+    "st_custom_quest_37_descr": {
+      "eng": "Retrieve the target item or complete the objective in the Zone.",
+      "rus": "Выполните поручение в Зоне."
+    },
+    "agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5_name": {
+      "eng": "Collect Expedition Reports",
+      "rus": "Под грифом «секретно»"
+    },
+    "agr_smart_terrain_1_6_near_2_military_colonel_kovalski_task_5_text": {
+      "eng": "I've been tasked by Colonel Kuznetsov to bring some mysterious reports back to base.",
+      "rus": "Полковник рвёт и мечет... Часовые проспали, как какие-то ушлые сталкеры выкрали довольно деликатные документы. Никогда такого не было, и вот опять...\\n \\nНеобходимо найти и вернуть украденные документы как можно скорее - Кузнецов ждёт, а ждать он не любит."
+    }
+  }
+}

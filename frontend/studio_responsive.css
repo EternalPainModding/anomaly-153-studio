@@ -1,0 +1,196 @@
+/* =========================================================================
+   ANOMALY STUDIO 1.5.3 — 100% RESPONSIVE LAYOUT & PRO EDITOR STYLES
+   Matches index.html native classes (.workspace, .nav-tabs, .nav-btn, .sidebar, .sidebar-right, .viewport-container)
+   ========================================================================= */
+html, body {
+  max-width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  height: auto !important;
+  min-height: 46px;
+  padding: 6px 12px !important;
+}
+
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.nav-btn {
+  padding: 5px 10px !important;
+  font-size: 11.5px !important;
+  white-space: nowrap;
+}
+
+/* CRITICAL: Only the active .workspace may be display:flex; all others MUST stay display:none! */
+.workspace {
+  flex: 1;
+  display: none !important;
+  width: 100vw;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.workspace.active {
+  display: flex !important;
+}
+
+.sidebar, .sidebar-right {
+  flex-shrink: 0;
+  min-width: 240px;
+  max-width: 28vw;
+  overflow-y: auto;
+}
+
+@media (max-width: 1400px) {
+  .sidebar { width: 260px !important; }
+  .sidebar-right { width: 290px !important; }
+  .nav-btn { padding: 4px 8px !important; font-size: 11px !important; }
+}
+
+@media (max-width: 1024px) {
+  .workspace.active {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .sidebar, .sidebar-right {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 30vh;
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom: 1px solid var(--border);
+  }
+  .viewport-container {
+    min-height: 54vh;
+  }
+}
+
+/* Selection Box for 3D Multi-Select */
+#boxSelectOverlay {
+  position: absolute;
+  border: 1.5px dashed #38bdf8;
+  background: rgba(56, 189, 248, 0.16);
+  pointer-events: none;
+  display: none;
+  z-index: 40;
+}
+
+/* UE5 Blueprint Node Graph Styles */
+.bp-node {
+  position: absolute;
+  width: 260px;
+  background: rgba(17, 24, 38, 0.96);
+  border: 1.5px solid #2b3a55;
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.65);
+  color: #e2e8f0;
+  font-size: 12px;
+  user-select: none;
+  cursor: grab;
+  z-index: 5;
+  transition: box-shadow 0.12s, border-color 0.12s;
+}
+.bp-node:hover {
+  border-color: #60a5fa;
+}
+.bp-node.selected {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.45), 0 10px 26px rgba(0, 0, 0, 0.8);
+}
+.bp-node-header {
+  padding: 7px 10px;
+  border-radius: 6px 6px 0 0;
+  font-weight: 700;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.bp-node-body {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.bp-pin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #94a3b8;
+}
+.bp-pin {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid #38bdf8;
+  background: #0b0f17;
+  cursor: crosshair;
+  display: inline-block;
+}
+.bp-pin.out { border-color: #4ade80; }
+.bp-pin:hover { transform: scale(1.3); background: #f59e0b; }
+
+
+/* Prevent 3D viewport toolbar from ever overflowing into right sidebar */
+.viewport-container {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+.viewport-toolbar {
+  max-width: calc(100% - 20px) !important;
+  box-sizing: border-box !important;
+}
+
+/* Fix dark-theme textareas & inputs inside Quest/Dialog Inspector */
+textarea.search-box, input.search-box {
+  width: 100%;
+  background: #0d1116 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #2b3543 !important;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+/* Prevent long task IDs from spilling outside Blueprint nodes or sidebar lists */
+.bp-node {
+  overflow: hidden !important;
+}
+.bp-node-body > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#qTaskList > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewport-toolbar select,
+.toolbar select,
+header select {
+  width: auto !important;
+  max-width: 170px !important;
+  display: inline-block !important;
+}
+
+/* Standing UI Guideline: All textboxes & floating drawers scalable and responsive */
+textarea, .search-box textarea, textarea.code-editor {
+  resize: both !important;
+  min-height: 54px;
+  max-width: 100%;
+}
+.sidebar, .sidebar-right {
+  resize: horizontal;
+  overflow: auto;
+}

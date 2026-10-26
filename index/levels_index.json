@@ -1,0 +1,376 @@
+[
+  {
+    "level": "fake_start",
+    "cform": {
+      "version": 4,
+      "vertcount": 52,
+      "facecount": 82
+    },
+    "ai": {
+      "vertex_count": 631
+    }
+  },
+  {
+    "level": "jupiter",
+    "cform": {
+      "version": 4,
+      "vertcount": 1791959,
+      "facecount": 3188162
+    },
+    "ai": {
+      "vertex_count": 1486320
+    }
+  },
+  {
+    "level": "jupiter_underground",
+    "cform": {
+      "version": 4,
+      "vertcount": 340824,
+      "facecount": 585570
+    },
+    "ai": {
+      "vertex_count": 41001
+    }
+  },
+  {
+    "level": "k00_marsh",
+    "cform": {
+      "version": 4,
+      "vertcount": 1786441,
+      "facecount": 3077895
+    },
+    "ai": {
+      "vertex_count": 532432
+    }
+  },
+  {
+    "level": "k01_darkscape",
+    "cform": {
+      "version": 4,
+      "vertcount": 910970,
+      "facecount": 1804193
+    },
+    "ai": {
+      "vertex_count": 1049091
+    }
+  },
+  {
+    "level": "k02_trucks_cemetery",
+    "cform": {
+      "version": 4,
+      "vertcount": 4985624,
+      "facecount": 8810878
+    },
+    "ai": {
+      "vertex_count": 909126
+    }
+  },
+  {
+    "level": "l01_escape",
+    "cform": {
+      "version": 4,
+      "vertcount": 1574279,
+      "facecount": 2949775
+    },
+    "ai": {
+      "vertex_count": 624967
+    }
+  },
+  {
+    "level": "l02_garbage",
+    "cform": {
+      "version": 4,
+      "vertcount": 1561697,
+      "facecount": 2753853
+    },
+    "ai": {
+      "vertex_count": 357996
+    }
+  },
+  {
+    "level": "l03_agroprom",
+    "cform": {
+      "version": 4,
+      "vertcount": 1393794,
+      "facecount": 2494244
+    },
+    "ai": {
+      "vertex_count": 422724
+    }
+  },
+  {
+    "level": "l03u_agr_underground",
+    "cform": {
+      "version": 4,
+      "vertcount": 474740,
+      "facecount": 862673
+    },
+    "ai": {
+      "vertex_count": 11608
+    }
+  },
+  {
+    "level": "l04_darkvalley",
+    "cform": {
+      "version": 4,
+      "vertcount": 1625650,
+      "facecount": 2883302
+    },
+    "ai": {
+      "vertex_count": 372057
+    }
+  },
+  {
+    "level": "l04u_labx18",
+    "cform": {
+      "version": 4,
+      "vertcount": 271084,
+      "facecount": 471176
+    },
+    "ai": {
+      "vertex_count": 7605
+    }
+  },
+  {
+    "level": "l05_bar",
+    "cform": {
+      "version": 4,
+      "vertcount": 1008956,
+      "facecount": 1951010
+    },
+    "ai": {
+      "vertex_count": 101874
+    }
+  },
+  {
+    "level": "l06_rostok",
+    "cform": {
+      "version": 4,
+      "vertcount": 868768,
+      "facecount": 1582039
+    },
+    "ai": {
+      "vertex_count": 69149
+    }
+  },
+  {
+    "level": "l07_military",
+    "cform": {
+      "version": 4,
+      "vertcount": 1556709,
+      "facecount": 2766427
+    },
+    "ai": {
+      "vertex_count": 387579
+    }
+  },
+  {
+    "level": "l08_yantar",
+    "cform": {
+      "version": 4,
+      "vertcount": 1058213,
+      "facecount": 1893049
+    },
+    "ai": {
+      "vertex_count": 153746
+    }
+  },
+  {
+    "level": "l08u_brainlab",
+    "cform": {
+      "version": 4,
+      "vertcount": 230760,
+      "facecount": 399568
+    },
+    "ai": {
+      "vertex_count": 8008
+    }
+  },
+  {
+    "level": "l09_deadcity",
+    "cform": {
+      "version": 4,
+      "vertcount": 1179129,
+      "facecount": 2133995
+    },
+    "ai": {
+      "vertex_count": 245046
+    }
+  },
+  {
+    "level": "l10_limansk",
+    "cform": {
+      "version": 4,
+      "vertcount": 1033715,
+      "facecount": 1807528
+    },
+    "ai": {
+      "vertex_count": 61559
+    }
+  },
+  {
+    "level": "l10_radar",
+    "cform": {
+      "version": 4,
+      "vertcount": 1341174,
+      "facecount": 2465989
+    },
+    "ai": {
+      "vertex_count": 227348
+    }
+  },
+  {
+    "level": "l10_red_forest",
+    "cform": {
+      "version": 4,
+      "vertcount": 1078501,
+      "facecount": 1962353
+    },
+    "ai": {
+      "vertex_count": 164829
+    }
+  },
+  {
+    "level": "l10u_bunker",
+    "cform": {
+      "version": 4,
+      "vertcount": 358855,
+      "facecount": 638585
+    },
+    "ai": {
+      "vertex_count": 8821
+    }
+  },
+  {
+    "level": "l11_hospital",
+    "cform": {
+      "version": 4,
+      "vertcount": 246067,
+      "facecount": 465864
+    },
+    "ai": {
+      "vertex_count": 7868
+    }
+  },
+  {
+    "level": "l11_pripyat",
+    "cform": {
+      "version": 4,
+      "vertcount": 1428990,
+      "facecount": 2562539
+    },
+    "ai": {
+      "vertex_count": 261774
+    }
+  },
+  {
+    "level": "l12_stancia",
+    "cform": {
+      "version": 4,
+      "vertcount": 822803,
+      "facecount": 1693651
+    },
+    "ai": {
+      "vertex_count": 495005
+    }
+  },
+  {
+    "level": "l12_stancia_2",
+    "cform": {
+      "version": 4,
+      "vertcount": 1315428,
+      "facecount": 2282121
+    },
+    "ai": {
+      "vertex_count": 859276
+    }
+  },
+  {
+    "level": "l12u_control_monolith",
+    "cform": {
+      "version": 4,
+      "vertcount": 231725,
+      "facecount": 400551
+    },
+    "ai": {
+      "vertex_count": 4168
+    }
+  },
+  {
+    "level": "l12u_sarcofag",
+    "cform": {
+      "version": 4,
+      "vertcount": 330389,
+      "facecount": 729847
+    },
+    "ai": {
+      "vertex_count": 11004
+    }
+  },
+  {
+    "level": "l13_generators",
+    "cform": {
+      "version": 4,
+      "vertcount": 1714295,
+      "facecount": 3263658
+    },
+    "ai": {
+      "vertex_count": 435513
+    }
+  },
+  {
+    "level": "l13u_warlab",
+    "cform": {
+      "version": 4,
+      "vertcount": 482945,
+      "facecount": 833042
+    },
+    "ai": {
+      "vertex_count": 8557
+    }
+  },
+  {
+    "level": "labx8",
+    "cform": {
+      "version": 4,
+      "vertcount": 105511,
+      "facecount": 172429
+    },
+    "ai": {
+      "vertex_count": 6781
+    }
+  },
+  {
+    "level": "pripyat",
+    "cform": {
+      "version": 4,
+      "vertcount": 2173751,
+      "facecount": 3850190
+    },
+    "ai": {
+      "vertex_count": 487255
+    }
+  },
+  {
+    "level": "y04_pole",
+    "cform": {
+      "version": 4,
+      "vertcount": 721912,
+      "facecount": 1291241
+    },
+    "ai": {
+      "vertex_count": 92084
+    }
+  },
+  {
+    "level": "zaton",
+    "cform": {
+      "version": 4,
+      "vertcount": 1439654,
+      "facecount": 2526706
+    },
+    "ai": {
+      "vertex_count": 1851251
+    }
+  }
+]
