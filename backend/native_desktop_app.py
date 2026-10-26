@@ -4,13 +4,13 @@ S.T.A.L.K.E.R. Anomaly 1.5.3 Studio — Native Desktop Application (Zero-Socket 
 Author: EternalPain
 
 Runs Anomaly Studio inside a native GTK3 + WebKit2 4.1 desktop window using the custom
-in-process URI scheme `anomaly://studio/...` and a native UserContentManager IPC bridge
-for POST/GET requests. Zero TCP/IP sockets or localhost ports are opened.
+in-process URI scheme `anomaly://studio/...` and a native threaded IPC bridge for POST/GET
+requests. Zero TCP/IP sockets or localhost ports are opened.
 
 For Dev/Debug or macOS/Browser mode, use `backend/server.py` (or `./AnomalyStudio --web`).
 """
 import base64
-import json
+import concurrent.futures
 import os
 import sys
 import urllib.parse
@@ -24,6 +24,8 @@ ROOT = (
 sys.path.insert(0, str(ROOT / "backend"))
 
 import server as studio_server  # noqa: E402
+
+_IPC_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=6, thread_name_prefix="anomaly_ipc")
 
 
 # Injected into `index.html` when running in Native `anomaly://studio/` mode so `fetch('/api/...')`
@@ -47,7 +49,7 @@ NATIVE_IPC_BRIDGE_JS = r"""
       const b64 = btoa(unescape(encodeURIComponent(rawBody)));
       const sep = url.includes("?") ? "&" : "?";
       const ipcUrl = url + sep + "__ipc_method=POST&__ipc_body_b64=" + encodeURIComponent(b64);
-      return origFetch(ipcUrl, { method: "GET", headers: (init && init.headers) || {} });
+      return origFetch(ipcUrl, { method: "GET" });
     }
     return origFetch(url, init);
   };
@@ -57,10 +59,12 @@ NATIVE_IPC_BRIDGE_JS = r"""
 
 
 def _handle_anomaly_uri_scheme(request) -> None:
-    """Handles `anomaly://studio/<path>` completely in-process via `studio_server.dispatch_inprocess_request`."""
+    """Handles `anomaly://studio/<path>` in a worker thread via `studio_server.dispatch_inprocess_request`
+    and finishes the `WebKit2.URISchemeRequest` on the GTK main loop so the UI never blocks."""
     import gi
     gi.require_version("WebKit2", "4.1")
-    from gi.repository import Gio, GLib, WebKit2
+    gi.require_version("Soup", "3.0")
+    from gi.repository import Gio, GLib, Soup, WebKit2
 
     uri = request.get_uri() or "anomaly://studio/"
     parsed = urllib.parse.urlparse(uri)
@@ -82,27 +86,48 @@ def _handle_anomaly_uri_scheme(request) -> None:
     clean_query = urllib.parse.urlencode(qs_map, doseq=True)
     raw_path = f"{path}?{clean_query}" if clean_query else path
 
-    status_code, content_type, payload = studio_server.dispatch_inprocess_request(method, raw_path, body_bytes)
+    def _worker():
+        status_code, content_type, payload = studio_server.dispatch_inprocess_request(method, raw_path, body_bytes)
+        if path in ("/", "/index.html") and content_type.startswith("text/html"):
+            html_str = payload.decode("utf-8", errors="replace")
+            html_str = html_str.replace("<head>", "<head>\n" + NATIVE_IPC_BRIDGE_JS, 1)
+            payload = html_str.encode("utf-8")
 
-    # Inject the native POST/GET fetch bridge into index.html
-    if path in ("/", "/index.html") and content_type.startswith("text/html"):
-        html_str = payload.decode("utf-8", errors="replace")
-        html_str = html_str.replace("<head>", "<head>\n" + NATIVE_IPC_BRIDGE_JS, 1)
-        payload = html_str.encode("utf-8")
+        def _finish_on_main():
+            try:
+                gbytes = GLib.Bytes.new(payload)
+                stream = Gio.MemoryInputStream.new_from_bytes(gbytes)
+                resp = WebKit2.URISchemeResponse.new(stream, len(payload))
+                resp.set_status(status_code, "OK" if status_code < 400 else "Error")
+                resp.set_content_type(content_type.split(";")[0].strip())
+                hdrs = Soup.MessageHeaders.new(Soup.MessageHeadersType.RESPONSE)
+                hdrs.append("Access-Control-Allow-Origin", "*")
+                hdrs.append("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+                hdrs.append("Access-Control-Allow-Headers", "*")
+                hdrs.append("Cache-Control", "no-store")
+                resp.set_http_headers(hdrs)
+                request.finish_with_response(resp)
+            except Exception:
+                pass
+            return False
 
-    gbytes = GLib.Bytes.new(payload)
-    stream = Gio.MemoryInputStream.new_from_bytes(gbytes)
-    resp = WebKit2.URISchemeResponse.new(stream, len(payload))
-    resp.set_status(status_code, "OK" if status_code < 400 else "Error")
-    resp.set_content_type(content_type.split(";")[0].strip())
-    request.finish_with_response(resp)
+        GLib.idle_add(_finish_on_main)
+
+    _IPC_POOL.submit(_worker)
 
 
 def run_native_gtk_app(self_test_ms: int = 0) -> int:
     import gi
     gi.require_version("Gtk", "3.0")
     gi.require_version("WebKit2", "4.1")
-    from gi.repository import GLib, Gtk, WebKit2
+    from gi.repository import Gdk, GLib, Gtk, WebKit2
+
+    try:
+        gtk_settings = Gtk.Settings.get_default()
+        if gtk_settings:
+            gtk_settings.set_property('gtk-application-prefer-dark-theme', True)
+    except Exception:
+        pass
 
     ctx = WebKit2.WebContext.get_default()
     sec = ctx.get_security_manager()
@@ -111,8 +136,14 @@ def run_native_gtk_app(self_test_ms: int = 0) -> int:
     sec.register_uri_scheme_as_local("anomaly")
     ctx.register_uri_scheme("anomaly", _handle_anomaly_uri_scheme)
 
-    win = Gtk.Window(title="S.T.A.L.K.E.R. Anomaly 1.5.3 Studio — Native Desktop Edition (Zero-Socket)")
+    win = Gtk.Window(title="S.T.A.L.K.E.R. Anomaly 1.5.3 Studio — Native Desktop Edition")
     win.set_default_size(1600, 940)
+    icon_file = ROOT / "frontend" / "assets" / "studio_icon.png"
+    if icon_file.is_file():
+        try:
+            win.set_icon_from_file(str(icon_file))
+        except Exception:
+            pass
     win.connect("destroy", Gtk.main_quit)
 
     settings = WebKit2.Settings()
@@ -123,6 +154,12 @@ def run_native_gtk_app(self_test_ms: int = 0) -> int:
 
     webview = WebKit2.WebView.new_with_context(ctx)
     webview.set_settings(settings)
+    try:
+        rgba = Gdk.RGBA()
+        rgba.parse('#0f1114')
+        webview.set_background_color(rgba)
+    except Exception:
+        pass
     win.add(webview)
 
     webview.load_uri("anomaly://studio/index.html")

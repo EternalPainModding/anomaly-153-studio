@@ -205,10 +205,13 @@ class AnomalyDb0VFS:
         self.archive_counts.clear()
         self._text_cache.clear()
 
-        anom_root = Path(self.anomaly_path)
+        from settings_service import _normalize_anomaly_root
+        if self.anomaly_path:
+            self.anomaly_path = _normalize_anomaly_root(self.anomaly_path)
+        anom_root = Path(self.anomaly_path) if self.anomaly_path else Path("")
         db_dir = anom_root / "db"
         mods_dir = anom_root / "mods"
-        if not db_dir.is_dir():
+        if not self.anomaly_path or (not db_dir.is_dir() and not list(anom_root.glob("*.db*"))):
             self._log(
                 "ERROR",
                 f"Anomaly db/ directory not found at: {db_dir}",
@@ -216,8 +219,11 @@ class AnomalyDb0VFS:
             )
             return {"ok": False, "archives": 0, "files": 0}
 
-        # Collect archives in Anomaly load priority order: db/** then mods/**
-        db_files = sorted(glob.glob(str(db_dir / "**" / "*.db*"), recursive=True))
+        # Collect archives in Anomaly load priority order: db/** (or direct *.db*) then mods/**
+        if db_dir.is_dir():
+            db_files = sorted(glob.glob(str(db_dir / "**" / "*.db*"), recursive=True))
+        else:
+            db_files = sorted(glob.glob(str(anom_root / "**" / "*.db*"), recursive=True))
         if mods_dir.is_dir():
             db_files.extend(sorted(glob.glob(str(mods_dir / "**" / "*.db*"), recursive=True)))
 
@@ -429,15 +435,32 @@ def get_vfs_mount_dir() -> Path:
 
 def get_global_vfs(anomaly_path: Optional[str] = None, mo2_path: Optional[str] = None) -> AnomalyDb0VFS:
     global _GLOBAL_VFS
-    if anomaly_path is None:
-        from settings_service import load_settings
-        st = load_settings()
+    from settings_service import load_settings, _normalize_anomaly_root
+    st = load_settings()
+    if not anomaly_path:
         anomaly_path = st.get("anomaly_path", "")
+    if mo2_path is None:
         mo2_path = st.get("mo2_path", "")
-    if _GLOBAL_VFS is None or _GLOBAL_VFS.anomaly_path != anomaly_path:
+    anomaly_path = _normalize_anomaly_root(anomaly_path) if anomaly_path else ""
+    if _GLOBAL_VFS is None or _GLOBAL_VFS.anomaly_path != anomaly_path or (_GLOBAL_VFS.total_archives == 0 and anomaly_path):
         _GLOBAL_VFS = AnomalyDb0VFS(anomaly_path, mo2_path or "")
         _GLOBAL_VFS.build_index(force_rescan=False)
         ensure_core_configs_mounted(_GLOBAL_VFS)
+    return _GLOBAL_VFS
+
+
+def reload_global_vfs(anomaly_path: Optional[str] = None, mo2_path: Optional[str] = None, force_rescan: bool = False) -> AnomalyDb0VFS:
+    global _GLOBAL_VFS
+    from settings_service import load_settings, _normalize_anomaly_root
+    st = load_settings()
+    if not anomaly_path:
+        anomaly_path = st.get("anomaly_path", "")
+    if mo2_path is None:
+        mo2_path = st.get("mo2_path", "")
+    anomaly_path = _normalize_anomaly_root(anomaly_path) if anomaly_path else ""
+    _GLOBAL_VFS = AnomalyDb0VFS(anomaly_path, mo2_path or "")
+    _GLOBAL_VFS.build_index(force_rescan=force_rescan)
+    ensure_core_configs_mounted(_GLOBAL_VFS)
     return _GLOBAL_VFS
 
 

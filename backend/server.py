@@ -2421,6 +2421,11 @@ def dispatch_inprocess_request(method: str, raw_path: str, body_bytes: bytes = b
 
 if __name__ == "__main__":
     port = int(os.environ.get("ANOMALY_STUDIO_PORT", "8780"))
+    for idx, arg in enumerate(sys.argv[1:], 1):
+        if arg == "--port" and idx < len(sys.argv) - 1:
+            port = int(sys.argv[idx + 1])
+        elif arg.startswith("--port="):
+            port = int(arg.split("=", 1)[1])
     server = ThreadingHTTPServer(("127.0.0.1", port), StudioRequestHandler)
     print(f"[Anomaly 1.5.3 Studio] Listening on http://127.0.0.1:{port}", flush=True)
     server.serve_forever()

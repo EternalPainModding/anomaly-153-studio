@@ -696,11 +696,15 @@
       modal = document.createElement("div");
       modal.id = "v010SettingsModal";
       modal.style.cssText =
-        "position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;";
+        "position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:10030;display:flex;align-items:center;justify-content:center;padding:16px;";
       document.body.appendChild(modal);
     }
+    modal.style.display = "flex";
+    if (!modal.innerHTML) {
+      modal.innerHTML = `<div style="background:#0f172a;border:1px solid #f5c400;border-radius:10px;padding:18px 24px;color:#f8fafc;font-size:13px;">Loading Paths & Settings...</div>`;
+    }
     const [r, modsRes] = await Promise.all([
-      fetch("/api/settings").then((x) => x.json()),
+      fetch("/api/settings").then((x) => x.json()).catch(() => ({})),
       fetch("/api/settings/importable_mods").then((x) => x.json()).catch(() => ({ mods: [] })),
     ]);
     const st = r.settings || {};
@@ -982,11 +986,15 @@
       modal = document.createElement("div");
       modal.id = "v010ProjectModal";
       modal.style.cssText =
-        "position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:10020;display:flex;align-items:center;justify-content:center;padding:16px;";
+        "position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:10030;display:flex;align-items:center;justify-content:center;padding:16px;";
       document.body.appendChild(modal);
     }
+    modal.style.display = "flex";
+    if (!modal.innerHTML) {
+      modal.innerHTML = `<div style="background:#0f172a;border:1px solid #f5c400;border-radius:10px;padding:18px 24px;color:#f8fafc;font-size:13px;">Loading Project Manager...</div>`;
+    }
     const isRu = window.currentLang === "ru";
-    const data = await fetch("/api/projects").then((r) => r.json());
+    const data = await fetch("/api/projects").then((r) => r.json()).catch(() => ({}));
     const act = data.active_summary || {};
     const mf = act.manifest || {};
     const luaInfo = data.lua_spawn_script || {};

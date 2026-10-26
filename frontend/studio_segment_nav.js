@@ -722,9 +722,9 @@ window.showStudioToast = function(msg, isError) {
       bar.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding:6px;background:rgba(20,26,34,0.9);border:1px solid #334155;border-radius:6px;";
       bar.innerHTML = `
         <button id="btnNavMeshTools" type="button" style="padding:5px 9px;background:#0ea5e9;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;">xrAI NavMesh-Builder (Erase/Relink/Bridge)</button>
-        <button id="btnPlaceStaticProp" type="button" style="padding:5px 9px;background:#8b5cf6;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;">Statisches 3D-Objekt + CFORM einbacken</button>
+        <button id="btnPlaceStaticProp" type="button" style="padding:5px 9px;background:#8b5cf6;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;">Bake Static 3D Prop + CFORM</button>
         <button id="btnSmartWaypointBuilder" type="button" style="padding:5px 9px;background:#10b981;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px;font-weight:600;">Smart-Terrain & Waypoints</button>
-        <button id="btnSpawnCatalogPicker" type="button" style="padding:5px 9px;background:#f59e0b;color:#111;border:none;border-radius:4px;cursor:pointer;font-size:11px;font-weight:700;">Verifizierter Spawn-Katalog (1.404)</button>
+        <button id="btnSpawnCatalogPicker" type="button" style="padding:5px 9px;background:#f59e0b;color:#111;border:none;border-radius:4px;cursor:pointer;font-size:11px;font-weight:700;">Verified Spawn Catalog (1,404)</button>
       `;
       mapDrawer.appendChild(bar);
 

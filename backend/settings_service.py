@@ -94,9 +94,16 @@ def load_settings() -> Dict[str, Any]:
         try:
             loaded = json.loads(SETTINGS_FILE.read_text(encoding="utf-8"))
             if isinstance(loaded, dict):
-                data.update(loaded)
-                if "first_run_completed" not in loaded:
-                    data["first_run_completed"] = bool(loaded.get("anomaly_path"))
+                for k, v in loaded.items():
+                    if k in ("anomaly_path", "mo2_path", "addons_input_path", "mods_output_path") and not v:
+                        continue
+                    data[k] = v
+                if "first_run_completed" in loaded:
+                    data["first_run_completed"] = bool(loaded["first_run_completed"])
+                elif "setup_completed" in loaded:
+                    data["first_run_completed"] = bool(loaded["setup_completed"])
+                else:
+                    data["first_run_completed"] = False
         except Exception:
             pass
     else:
@@ -110,12 +117,37 @@ def load_settings() -> Dict[str, Any]:
     return data
 
 
+def _normalize_anomaly_root(raw_path: str) -> str:
+    if not raw_path:
+        return ""
+    p = Path(raw_path).expanduser()
+    if p.is_file():
+        p = p.parent
+    # Walk up ancestors if the user selected db/, db/configs/, db/levels/, bin/, gamedata/, etc.
+    for anc in [p] + list(p.parents)[:4]:
+        if (anc / "db").is_dir() and any((anc / "db").rglob("*.db*")):
+            return str(anc)
+    # Check immediate child folders if user selected a parent directory like Downloads/
+    if p.is_dir():
+        for sub in (p / "Anomaly-1.5.3-Full.2", p / "Anomaly"):
+            if sub.is_dir() and (sub / "db").is_dir():
+                return str(sub)
+        try:
+            for child in sorted(p.iterdir()):
+                if child.is_dir() and (child / "db").is_dir() and any((child / "db").rglob("*.db*")):
+                    return str(child)
+        except Exception:
+            pass
+    return str(p)
+
+
 def validate_paths(
     anomaly_path: str,
     mo2_path: str,
     addons_input_path: str = "",
     mods_output_path: str = "",
 ) -> Dict[str, Any]:
+    anomaly_path = _normalize_anomaly_root(anomaly_path)
     anom_p = Path(anomaly_path).expanduser() if anomaly_path else Path("")
     mo2_p = Path(mo2_path).expanduser() if mo2_path else Path("")
     in_p = Path(addons_input_path).expanduser() if addons_input_path else ADDONS_INPUT_DIR
@@ -187,7 +219,11 @@ def save_settings(updates: Dict[str, Any] | None = None, **kwargs: Any) -> Dict[
     ):
         if k in updates and updates[k] is not None:
             current[k] = updates[k]
-    if "anomaly_path" in updates and updates.get("anomaly_path"):
+    if current.get("anomaly_path"):
+        current["anomaly_path"] = _normalize_anomaly_root(str(current["anomaly_path"]))
+    elif auto_detect_paths().get("anomaly_path"):
+        current["anomaly_path"] = auto_detect_paths()["anomaly_path"]
+    if current.get("anomaly_path"):
         current["first_run_completed"] = True
     if current.get("language") not in ("en", "ru"):
         current["language"] = "en"

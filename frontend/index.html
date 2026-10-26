@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <title>S.T.A.L.K.E.R. Anomaly 1.5.3 Studio (v0.1.0-alpha)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -17,8 +18,10 @@
       --accent-green: #42c87a;
       --accent-blue: #46a0f5;
       --accent-red: #e5534b;
-      --text: #dce3ec;
-      --text-muted: #8b97a8;
+      --text: #f1f5f9;
+      --text-muted: #cbd5e1;
+      --muted: #cbd5e1;
+      color-scheme: dark;
       --border: #2a3441;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -803,6 +806,10 @@ function switchTab(tab) {
       loadOgfModel(currentOgfPath || 'dynamics/weapons/wpn_ak74/wpn_ak74.ogf');
     }
   } else if (tab === 'map') {
+    if (!window.__level3DLoadedOnce && typeof loadLevel3D === 'function') {
+      window.__level3DLoadedOnce = true;
+      loadLevel3D(window.currentLevel || 'l01_escape');
+    }
     const mc = document.getElementById('mapCanvas');
     if (mc && mapRenderer && mapCamera) {
       const mw = mc.clientWidth || 960, mh = mc.clientHeight || 640;
@@ -1348,6 +1355,7 @@ function initMap3D() {
 }
 
 async function loadLevel3D(levelName) {
+  window.__level3DLoadedOnce = true;
   window.currentLevel = currentLevel = levelName;
   if (typeof window.syncEdenCampaignForLevel === 'function') window.syncEdenCampaignForLevel(levelName);
   spawnOgfLoadedCount = 0;

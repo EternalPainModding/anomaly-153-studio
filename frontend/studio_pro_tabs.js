@@ -162,7 +162,7 @@
               <h3 style="font-size:16px;color:#38bdf8;margin:0;">Ladebildschirm-Texte & Tipps Editor (ui_st_loadscreen.xml)</h3>
               <p style="font-size:12px;color:#94a3b8;margin:4px 0 0;">Search, edit, or add all 103 loadscreen tips (<code>ls_header</code>, <code>ls_tip_1</code> .. <code>ls_tip_100+</code>) directly.</p>
             </div>
-            <button class="btn primary" id="btnNewLoadscreenTip">Neuen Lade-Tipp anlegen</button>
+            <button class="btn primary" id="btnNewLoadscreenTip">+ New Loadscreen Tip</button>
           </div>
           <div id="loadscreenTipsGrid" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
@@ -648,7 +648,7 @@
     const xStart = 48;
     const yStart = 48;
     const xStep = 312; // 13 * 24px grid (card width is 264px -> 48px horizontal gap)
-    const yStep = 144; // 6 * 24px grid (card height ~108px -> 36px vertical gap)
+    const yStep = 168; // 7 * 24px grid (generous vertical spacing so cards never crowd)
 
     const nodeById = {};
     const outAdj = {};
@@ -1226,6 +1226,10 @@
       });
 
       let dragging = false, startX = 0, startY = 0, origX = 0, origY = 0;
+      div.addEventListener("click", (ev) => {
+        if (ev.target.closest(".bp-pin-hit-out") || ev.target.closest(".bp-pin-hit-in")) return;
+        selectBlueprintNode(n);
+      });
       div.addEventListener("mousedown", (ev) => {
         if (ev.button !== 0) return;
         if (ev.target.closest(".bp-pin-hit-out") || ev.target.closest(".bp-pin-hit-in")) return;
@@ -1410,15 +1414,18 @@
     });
   }
 
-  let cachedQuestPresets = null;
+  let cachedQuestPresets = { templates: [], npcs: [], locations: [], items: [] };
+  let _questPresetsFetched = false;
   async function ensureQuestPresetsLoaded() {
-    if (cachedQuestPresets) return cachedQuestPresets;
-    try {
-      const r = await fetch("/api/quests/campaign_templates");
-      const d = await r.json();
-      if (d && d.ok) cachedQuestPresets = d;
-    } catch (e) {}
-    return cachedQuestPresets || { templates: [], npcs: [], locations: [], items: [] };
+    if (_questPresetsFetched) return cachedQuestPresets;
+    _questPresetsFetched = true;
+    fetch("/api/quests/campaign_templates")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d && d.ok) cachedQuestPresets = d;
+      })
+      .catch(() => {});
+    return cachedQuestPresets;
   }
 
   async function selectBlueprintNode(n) {
@@ -2043,9 +2050,15 @@
       if (campBox) campBox.style.display = mode === "story" ? "block" : "none";
       renderQuestSidebarList();
       if (mode === "tips") renderLoadscreenTipsList();
-      if (mode === "story" && currentGraph && currentGraph.is_dialog) {
-        const cVal = document.getElementById("qCampaignSelect")?.value || "tm_escape.ltx";
-        loadCampaignGraph(cVal);
+      if (mode === "story") {
+        if (currentGraph && currentGraph.is_dialog) {
+          const cVal = document.getElementById("qCampaignSelect")?.value || "tm_escape.ltx";
+          loadCampaignGraph(cVal);
+        } else if (selectedQuestNode) {
+          selectBlueprintNode(selectedQuestNode);
+        } else if (currentGraph && Array.isArray(currentGraph.nodes) && currentGraph.nodes.length) {
+          selectBlueprintNode(currentGraph.nodes[0]);
+        }
       }
     }
 
@@ -2072,6 +2085,10 @@
     });
 
     document.getElementById("btnAddQuestNode")?.addEventListener("click", async () => {
+      if (activeSubTab !== "story") {
+        activeSubTab = "story";
+        document.getElementById("qSubTabStory")?.click();
+      }
       pushGraphUndoState("Add Quest Node");
       currentGraph.nodes = currentGraph.nodes || [];
       let suffix = currentGraph.nodes.length + 1;
@@ -2745,7 +2762,7 @@ on_fail               = %-esc_wolf_carpark_box_task_active%</pre>
     wrap.style.gap = "5px";
     wrap.style.alignItems = "center";
     wrap.innerHTML = `
-      <button class="btn" id="btn3DRuler" title="3D Lineal: Zwei Punkte auf der Map anklicken, um Distanz in Metern zu messen" style="padding:5px 9px;font-size:12px;">Lineal: <span id="rulerDistText">Aus</span></button>
+      <button class="btn" id="btn3DRuler" title="3D Ruler: Click two points on the map to measure distance in meters" style="padding:5px 9px;font-size:12px;">Ruler: <span id="rulerDistText">Off</span></button>
       <select id="camBookmarkSelect" class="search-box" style="width:135px;padding:4px 6px;font-size:11px;margin:0;">
         <option value="">Kamera-Lesezeichen...</option>
       </select>
