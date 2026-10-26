@@ -171,7 +171,7 @@ def run_native_gtk_app(self_test_ms: int = 0) -> int:
             return False
         GLib.timeout_add(self_test_ms, _auto_close)
 
-    print("[Anomaly Studio v0.1.0-alpha] Running Native Desktop Window (scheme: anomaly://studio/, 0 network ports opened).", flush=True)
+    print("[Anomaly Studio v0.1.1-alpha] Running Native Desktop Window (scheme: anomaly://studio/, 0 network ports opened).", flush=True)
     Gtk.main()
     return 0
 

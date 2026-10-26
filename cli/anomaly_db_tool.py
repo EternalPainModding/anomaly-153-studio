@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Anomaly Studio v0.1.0-alpha — CLI .db0 Archive Tool (List, Extract, Pack)
+Anomaly Studio v0.1.1-alpha — CLI .db0 Archive Tool (List, Extract, Pack)
 =========================================================================
 Author / Credits: EternalPain
 """

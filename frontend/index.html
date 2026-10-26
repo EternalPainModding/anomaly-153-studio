@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <title>S.T.A.L.K.E.R. Anomaly 1.5.3 Studio (v0.1.0-alpha)</title>
+  <title>S.T.A.L.K.E.R. Anomaly 1.5.3 Studio (v0.1.1-alpha)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/TransformControls.js"></script>
@@ -806,7 +806,7 @@ function switchTab(tab) {
       loadOgfModel(currentOgfPath || 'dynamics/weapons/wpn_ak74/wpn_ak74.ogf');
     }
   } else if (tab === 'map') {
-    if (!window.__level3DLoadedOnce && typeof loadLevel3D === 'function') {
+    if (!window.__level3DLoadedOnce && overviewData && typeof loadLevel3D === 'function') {
       window.__level3DLoadedOnce = true;
       loadLevel3D(window.currentLevel || 'l01_escape');
     }
@@ -830,14 +830,23 @@ async function initApp() {
   setLanguage(currentLang);
   initMap3D();
   initOgf3D();
-  await searchOgfList();
-  await loadOgfModel(currentOgfPath);
 
-  const res = await fetch('/api/overview');
-  overviewData = await res.json();
-  allLevels = overviewData.levels;
-  renderLevelList(allLevels);
-  renderAddonsPanel(overviewData.addons || []);
+  try {
+    const res = await fetch('/api/overview');
+    overviewData = await res.json();
+    allLevels = overviewData.levels || [];
+    renderLevelList(allLevels);
+    renderAddonsPanel(overviewData.addons || []);
+  } catch (e) {
+    console.error('Overview load error:', e);
+  }
+
+  setTimeout(() => {
+    try {
+      searchOgfList();
+      loadOgfModel(currentOgfPath);
+    } catch (e) {}
+  }, 800);
 
   const spInit = new URLSearchParams(window.location.search);
   if (spInit.get('qa_auto') === '1' && typeof window.runFullMultiTabBrowserQA === 'function') {
@@ -985,16 +994,18 @@ function onAddonFilterChange() {
 
 function renderLevelList(levels) {
   const container = document.getElementById('levelList');
+  if (!container || !Array.isArray(levels)) return;
   container.innerHTML = '';
   levels.forEach(l => {
     const div = document.createElement('div');
     div.className = 'list-item' + (l.level === currentLevel ? ' selected' : '');
-    const spCount = overviewData.spawns_summary.levels[l.level]?.spawns || 0;
+    const spCount = overviewData?.spawns_summary?.levels?.[l.level]?.spawns ?? l.spawns_count ?? 0;
     const tris = l.cform ? (l.cform.facecount / 1000).toFixed(0) + 'k tris' : '';
+    const aiCnt = l.ai?.vertex_count ? (l.ai.vertex_count / 1000).toFixed(0) + 'k AI' : '0k AI';
     div.innerHTML = `
       <div>
         <strong>${l.level}</strong>
-        <div class="sub">${tris} · ${(l.ai.vertex_count/1000).toFixed(0)}k AI</div>
+        <div class="sub">${tris} · ${aiCnt}</div>
       </div>
       <span class="sub">${spCount} Spawns</span>
     `;
@@ -1005,8 +1016,10 @@ function renderLevelList(levels) {
 }
 
 function filterLevels() {
-  const q = document.getElementById('levelSearch').value.toLowerCase();
-  renderLevelList(allLevels.filter(l => l.level.toLowerCase().includes(q)));
+  if (!Array.isArray(allLevels) || allLevels.length === 0) return;
+  const searchEl = document.getElementById('levelSearch');
+  const q = (searchEl ? searchEl.value : '').toLowerCase();
+  renderLevelList(allLevels.filter(l => (l.level || '').toLowerCase().includes(q)));
 }
 
 function initMap3D() {
@@ -1504,24 +1517,31 @@ async function loadLevel3D(levelName) {
 
         if (c === 0) {
           subGeom.setIndex(new THREE.BufferAttribute(subIdx, 1));
-          const splatTex = await new Promise(res => new THREE.TextureLoader().load(
-            `/api/texture/terrain_splat?level=${encodeURIComponent(levelName)}`,
-            t => res(t), undefined, () => res(new THREE.Texture())
-          ));
-          splatTex.wrapS = THREE.ClampToEdgeWrapping;
-          splatTex.wrapT = THREE.ClampToEdgeWrapping;
-          splatTex.minFilter = THREE.LinearMipmapLinearFilter;
-          splatTex.magFilter = THREE.LinearFilter;
-          window._currentTerrainSplatTex = splatTex;
-          cformMeshes[c] = new THREE.Mesh(subGeom, new THREE.MeshLambertMaterial({
-            map: splatTex,
+          const terrMat = new THREE.MeshLambertMaterial({
             color: 0xffffff,
-            vertexColors: false,
+            vertexColors: true,
             side: THREE.DoubleSide,
             polygonOffset: true,
             polygonOffsetFactor: 2,
             polygonOffsetUnits: 2
-          }));
+          });
+          cformMeshes[c] = new THREE.Mesh(subGeom, terrMat);
+          new THREE.TextureLoader().load(
+            `/api/texture/terrain_splat?level=${encodeURIComponent(levelName)}`,
+            splatTex => {
+              if (window.currentLevel !== levelName) return;
+              splatTex.wrapS = THREE.ClampToEdgeWrapping;
+              splatTex.wrapT = THREE.ClampToEdgeWrapping;
+              splatTex.minFilter = THREE.LinearMipmapLinearFilter;
+              splatTex.magFilter = THREE.LinearFilter;
+              window._currentTerrainSplatTex = splatTex;
+              if (cformMeshes[0] && window._satelliteViewEnabled !== false) {
+                cformMeshes[0].material.map = splatTex;
+                cformMeshes[0].material.vertexColors = false;
+                cformMeshes[0].material.needsUpdate = true;
+              }
+            }
+          );
         } else if (c === 1 && geomBuf && geomBuf.byteLength > 16) {
           // Build exact static building/wall/roof/prop meshes directly from level + level.geom (all 196+ original DDS textures & exact UVs!)
           const gdv = new DataView(geomBuf);
@@ -1548,48 +1568,54 @@ async function loadLevel3D(levelName) {
             }
             realGeom.setIndex(new THREE.BufferAttribute(new Uint32Array(geomBuf, idxOff, gInds), 1));
 
-            const atlasTex = await new Promise(res => new THREE.TextureLoader().load(`/api/texture/level_geom_atlas?level=${encodeURIComponent(levelName)}&v=14`, t => res(t), undefined, () => res(new THREE.Texture())));
-            window._currentLevelGeomAtlas = atlasTex;
             window._currentLevelGeomGroups = groupsMeta;
-            const atlasImg = atlasTex.image;
-            const matArray = [];
-            realGeom.clearGroups();
-            if (atlasImg && atlasImg.width >= 128 && Array.isArray(groupsMeta) && groupsMeta.length > 0) {
-              const tileSz = Math.floor(atlasImg.width / 16) || 128;
-              for (let gi = 0; gi < groupsMeta.length; gi++) {
-                const g = groupsMeta[gi];
-                const tIdx = (typeof g.tile_idx === 'number') ? g.tile_idx : gi;
-                const col = tIdx & 15;
-                const row = tIdx >> 4;
-                const tileCanvas = document.createElement('canvas');
-                tileCanvas.width = tileSz;
-                tileCanvas.height = tileSz;
-                const ctx2d = tileCanvas.getContext('2d');
-                ctx2d.drawImage(atlasImg, col * tileSz, row * tileSz, tileSz, tileSz, 0, 0, tileSz, tileSz);
-                const tileTex = new THREE.CanvasTexture(tileCanvas);
-                tileTex.wrapS = THREE.RepeatWrapping;
-                tileTex.wrapT = THREE.RepeatWrapping;
-                tileTex.flipY = true;
-                tileTex.generateMipmaps = true;
-                tileTex.minFilter = THREE.LinearMipmapLinearFilter;
-                tileTex.magFilter = THREE.LinearFilter;
-                tileTex.needsUpdate = true;
-                matArray.push(new THREE.MeshLambertMaterial({
-                  map: tileTex,
+            cformMeshes[c] = new THREE.Mesh(realGeom, new THREE.MeshLambertMaterial({
+              color: 0xb8c2cc,
+              side: THREE.DoubleSide
+            }));
+            new THREE.TextureLoader().load(`/api/texture/level_geom_atlas?level=${encodeURIComponent(levelName)}&v=14`, atlasTex => {
+              if (window.currentLevel !== levelName || !cformMeshes[1]) return;
+              window._currentLevelGeomAtlas = atlasTex;
+              const atlasImg = atlasTex.image;
+              if (atlasImg && atlasImg.width >= 128 && Array.isArray(groupsMeta) && groupsMeta.length > 0) {
+                const tileSz = Math.floor(atlasImg.width / 16) || 128;
+                const matArray = [];
+                realGeom.clearGroups();
+                for (let gi = 0; gi < groupsMeta.length; gi++) {
+                  const g = groupsMeta[gi];
+                  const tIdx = (typeof g.tile_idx === 'number') ? g.tile_idx : gi;
+                  const col = tIdx & 15;
+                  const row = tIdx >> 4;
+                  const tileCanvas = document.createElement('canvas');
+                  tileCanvas.width = tileSz;
+                  tileCanvas.height = tileSz;
+                  const ctx2d = tileCanvas.getContext('2d');
+                  ctx2d.drawImage(atlasImg, col * tileSz, row * tileSz, tileSz, tileSz, 0, 0, tileSz, tileSz);
+                  const tileTex = new THREE.CanvasTexture(tileCanvas);
+                  tileTex.wrapS = THREE.RepeatWrapping;
+                  tileTex.wrapT = THREE.RepeatWrapping;
+                  tileTex.flipY = true;
+                  tileTex.generateMipmaps = true;
+                  tileTex.minFilter = THREE.LinearMipmapLinearFilter;
+                  tileTex.magFilter = THREE.LinearFilter;
+                  tileTex.needsUpdate = true;
+                  matArray.push(new THREE.MeshLambertMaterial({
+                    map: tileTex,
+                    color: 0xffffff,
+                    side: THREE.DoubleSide,
+                    alphaTest: g.alpha ? 0.35 : 0.0
+                  }));
+                  realGeom.addGroup(g.start, g.count, gi);
+                }
+                cformMeshes[1].material = matArray;
+              } else {
+                cformMeshes[1].material = new THREE.MeshLambertMaterial({
+                  map: atlasTex,
                   color: 0xffffff,
-                  side: THREE.DoubleSide,
-                  alphaTest: g.alpha ? 0.35 : 0.0
-                }));
-                realGeom.addGroup(g.start, g.count, gi);
+                  side: THREE.DoubleSide
+                });
               }
-              cformMeshes[c] = new THREE.Mesh(realGeom, matArray);
-            } else {
-              cformMeshes[c] = new THREE.Mesh(realGeom, new THREE.MeshLambertMaterial({
-                map: atlasTex,
-                color: 0xffffff,
-                side: THREE.DoubleSide
-              }));
-            }
+            });
           } else {
             subGeom.setIndex(new THREE.BufferAttribute(subIdx, 1));
             cformMeshes[c] = new THREE.Mesh(subGeom, new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }));
@@ -1638,7 +1664,7 @@ async function loadLevel3D(levelName) {
 
   // 3. Build Spawns + 3D OGF Group
   currentSpawns = (spData.spawns || []).map((sp, idx) => normalizeSpawnObject(sp, idx));
-  currentPatrols = spData.patrols || [];
+  currentPatrols = Array.isArray(spData.patrols) ? spData.patrols : Object.values(spData.patrols || {});
   undoStack = [];
   redoStack = [];
   updateUndoRedoButtons();

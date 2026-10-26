@@ -1,10 +1,10 @@
-# S.T.A.L.K.E.R. Anomaly 1.5.3 Studio (`v0.1.0-alpha` — Tech Demo)
+# S.T.A.L.K.E.R. Anomaly 1.5.3 Studio (`v0.1.1-alpha` — Tech Demo)
 
 ![Anomaly Studio Banner](./frontend/assets/anomaly_studio_banner_yellow_black.png)
 
-**Official Discord:** [Join the Anomaly Studio Discord](https://discord.gg/dCGf3zP8fR) · **Latest Download:** [GitHub Releases (`v0.1.0-alpha`)](https://github.com/EternalPainModding/anomaly-153-studio/releases/tag/v0.1.0-alpha) · **Author:** `EternalPain`
+**Official Discord:** [Join the Anomaly Studio Discord](https://discord.gg/dCGf3zP8fR) · **Latest Download:** [GitHub Releases (`v0.1.1-alpha`)](https://github.com/EternalPainModding/anomaly-153-studio/releases/tag/v0.1.1-alpha) · **Author:** `EternalPain`
 
-> **Early Alpha / Tech Demo Notice (`v0.1.0-alpha`)**  
+> **Early Alpha / Tech Demo Notice (`v0.1.1-alpha`)**  
 > This release is an **early Alpha build and technical preview**, not a finished SDK. Expect rough edges and unfinished features. Always back up your `gamedata/` folder, savegames, and Mod Organizer 2 profiles before testing exported mods in-game.
 
 ---
@@ -20,9 +20,9 @@ Normally, modding Anomaly requires unpacking tens of gigabytes of `.db0` archive
 ## Quick Start
 
 ### 1. Download & Unpack
-Go to [**Releases (`v0.1.0-alpha`)**](https://github.com/EternalPainModding/anomaly-153-studio/releases/tag/v0.1.0-alpha) and download the archive for your system:
-- **Windows (`x86_64`):** Download `Anomaly_Studio_v0.1.0-alpha_Windows_x86_64.zip`, extract it anywhere, and launch **`AnomalyStudio.exe`**.
-- **Linux (`x86_64`):** Download `Anomaly_Studio_v0.1.0-alpha_Linux_x86_64.tar.gz`, extract it, and launch **`./AnomalyStudio`**.
+Go to [**Releases (`v0.1.1-alpha`)**](https://github.com/EternalPainModding/anomaly-153-studio/releases/tag/v0.1.1-alpha) and download the archive for your system:
+- **Windows (`x86_64`):** Download `Anomaly_Studio_v0.1.1-alpha_Windows_x86_64.zip`, extract it anywhere, and launch **`AnomalyStudio.exe`**.
+- **Linux (`x86_64`):** Download `Anomaly_Studio_v0.1.1-alpha_Linux_x86_64.tar.gz`, extract it, and launch **`./AnomalyStudio`**.
 
 ### 2. Set Your Anomaly 1.5.3 Folder (First Launch)
 1. Click **Paths & Settings** in the top bar.
@@ -51,7 +51,7 @@ python3 backend/server.py
 
 ---
 
-## Current Features in `v0.1.0-alpha` (Tech Demo)
+## Current Features in `v0.1.1-alpha` (Tech Demo)
 
 - **Direct `.db0` Virtual File System (VFS):** Streams levels, `.ogf` meshes, `.dds` textures, `.ltx` configs, and `.xml` dialogs directly from Anomaly's `db/*.db0` archives without unpacking.
 - **Visual Quest & Dialog Graph (Tab 1):** Drag-and-drop node connections, resizable property inspector, pre-flight syntax & softlock checks, and 3D map target picker (`LVID` / `GVID`).

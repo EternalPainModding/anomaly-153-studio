@@ -243,7 +243,7 @@
       <div style="flex:1;overflow-y:auto;padding:24px 36px;background:#0b0f17;color:#e2e8f0;line-height:1.65;">
         <div style="max-width:1040px;margin:0 auto;">
           <h1 style="color:#38bdf8;font-size:24px;margin-bottom:6px;">S.T.A.L.K.E.R. Anomaly 1.5.3 Studio — Complete Handbook & Workflow Guide (EN / RU)</h1>
-          <p style="color:#94a3b8;font-size:13px;margin-bottom:20px;"><b>Open Source (MIT License) · Early Alpha / Tech Demo (<code>v0.1.0-alpha</code>)</b> · Built for <b>S.T.A.L.K.E.R. Anomaly 1.5.3 (64-bit Monolith Engine)</b> · Local execution with direct <code>.db0</code> and Mod Organizer 2 (<code>.zip</code>) export.</p>
+          <p style="color:#94a3b8;font-size:13px;margin-bottom:20px;"><b>Open Source (MIT License) · Early Alpha / Tech Demo (<code>v0.1.1-alpha</code>)</b> · Built for <b>S.T.A.L.K.E.R. Anomaly 1.5.3 (64-bit Monolith Engine)</b> · Local execution with direct <code>.db0</code> and Mod Organizer 2 (<code>.zip</code>) export.</p>
 
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:24px;">
             <div style="background:#111826;border:1px solid #1f2a3c;border-radius:8px;padding:16px;">

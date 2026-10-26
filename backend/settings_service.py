@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Anomaly Studio v0.1.0-alpha — Persistent Settings, Path Setup Wizard & MO2/Addon Importer (EN + RU)
+Anomaly Studio v0.1.1-alpha — Persistent Settings, Path Setup Wizard & MO2/Addon Importer (EN + RU)
 ====================================================================================================
 Author / Credits: EternalPain
 """

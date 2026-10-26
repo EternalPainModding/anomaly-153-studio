@@ -111,7 +111,7 @@ def run_full_best_practices_qa() -> int:
     # Stage 2: SDK API-first Manifest & Capabilities
     st, man = _api("GET", "/api/sdk/manifest")
     assert st == 200 and man.get("ok") is True, f"Stage 2 failed: {man}"
-    assert man.get("sdk_version") == "0.1.0-alpha" and man.get("schema_version") == "1.0.0"
+    assert man.get("sdk_version") == "0.1.1-alpha" and man.get("schema_version") == "1.0.0"
     assert man.get("author") == "EternalPain"
     caps = man.get("capabilities", {})
     assert caps.get("db0_vfs_direct_read") and caps.get("db0_archives_mounted", 0) >= 60

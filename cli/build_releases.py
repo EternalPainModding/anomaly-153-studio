@@ -22,7 +22,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
 RELEASES_DIR = ROOT / "exports" / "releases"
-VERSION = "v0.1.0-alpha"
+VERSION = "v0.1.1-alpha"
 
 LINUX_TAR_NAME = f"Anomaly_Studio_{VERSION}_Linux_x86_64.tar.gz"
 WINDOWS_ZIP_NAME = f"Anomaly_Studio_{VERSION}_Windows_x86_64.zip"
@@ -84,7 +84,7 @@ def populate_common_tree(stage_root: Path) -> None:
     idx_dst = stage_root / "index"
     idx_dst.mkdir(parents=True, exist_ok=True)
     for item in idx_src.iterdir():
-        if item.name == "spawns_parsed" or item.name.startswith("."):
+        if item.name.startswith("."):
             continue
         target = idx_dst / item.name
         if item.is_dir():
@@ -208,6 +208,8 @@ def verify_release_archives(linux_tar_path: Path | None = None, win_zip_path: Pa
             "frontend/studio_pro_tabs.js",
             "frontend/studio_v010_alpha.js",
             "index/verified_spawn_catalog.json",
+            "index/spawns_parsed/_summary.json",
+            "index/spawns_parsed/l01_escape_spawns.json",
             "index/ltx_sections_index.json",
             "index/game_graph_gvids.json",
             "config/studio_settings.json",
@@ -234,6 +236,8 @@ def verify_release_archives(linux_tar_path: Path | None = None, win_zip_path: Pa
             "frontend/index.html",
             "frontend/studio_pro_tabs.js",
             "index/verified_spawn_catalog.json",
+            "index/spawns_parsed/_summary.json",
+            "index/spawns_parsed/l01_escape_spawns.json",
             "config/studio_settings.json",
             "README.md",
         ]

@@ -52,8 +52,8 @@ int main(int argc, char **argv) {
     int has_display = (getenv("DISPLAY") != NULL || getenv("WAYLAND_DISPLAY") != NULL);
 
     if (!force_web && has_display) {
-        printf("[Anomaly Studio v0.1.0-alpha] Launching Native Desktop Application (anomaly://studio/ In-Process, 0 network ports)...\n");
-        printf("[Anomaly Studio v0.1.0-alpha] Tip: Pass '--web' or '--dev' to run the 127.0.0.1:8780 Dev/Debug & macOS Web Server edition.\n");
+        printf("[Anomaly Studio v0.1.1-alpha] Launching Native Desktop Application (anomaly://studio/ In-Process, 0 network ports)...\n");
+        printf("[Anomaly Studio v0.1.1-alpha] Tip: Pass '--web' or '--dev' to run the 127.0.0.1:8780 Dev/Debug & macOS Web Server edition.\n");
         fflush(stdout);
 
         char native_script[PATH_MAX + 64];
@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
         setenv("ANOMALY_STUDIO_PORT", port, 1);
     }
 
-    printf("[Anomaly Studio v0.1.0-alpha] Starting Dev/Web Server Edition at http://127.0.0.1:%s ...\n", port);
+    printf("[Anomaly Studio v0.1.1-alpha] Starting Dev/Web Server Edition at http://127.0.0.1:%s ...\n", port);
     fflush(stdout);
 
     child_pid = fork();

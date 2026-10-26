@@ -1,5 +1,5 @@
 /**
- * Anomaly Studio v0.1.0-alpha — Must-Ship Core Extension (Strictly EN + RU, 0% DE)
+ * Anomaly Studio v0.1.1-alpha — Must-Ship Core Extension (Strictly EN + RU, 0% DE)
  * =================================================================================
  * Author / Credits: EternalPain
  *
@@ -287,7 +287,7 @@
       if (btnOgf && btnPack) tabsBar.insertBefore(btnOgf, btnPack);
     }
 
-    // Hide experimental segment switch buttons in v0.1.0-alpha release view to keep focus 100% on Must-Ship
+    // Hide experimental segment switch buttons in v0.1.1-alpha release view to keep focus 100% on Must-Ship
     document.querySelectorAll('.segment-switch-btn[data-segment="lab"], .segment-switch-btn[data-segment="all"]').forEach((b) => {
       b.style.display = "none";
     });
@@ -295,14 +295,14 @@
       if (b.dataset.tab !== "ogf") b.style.display = "none";
     });
 
-    // Inject v0.1.0-alpha action cluster into header-right
+    // Inject v0.1.1-alpha action cluster into header-right
     const hdrRight = document.querySelector(".header-right");
     if (hdrRight && !document.getElementById("v010TopBarCluster")) {
       const cluster = document.createElement("div");
       cluster.id = "v010TopBarCluster";
       cluster.style.cssText = "display:flex;align-items:center;gap:6px;flex-wrap:wrap;";
       cluster.innerHTML = `
-        <span id="v010TechDemoBadge" title="Early Alpha / Technical Preview (v0.1.0-alpha) — For testing and evaluation. Always back up your gamedata/MO2 profile." style="font-size:10.5px;color:#fbbf24;background:#451a03;padding:3px 7px;border-radius:4px;border:1px solid #d97706;font-weight:700;letter-spacing:0.3px;">ALPHA TECH DEMO v0.1</span>
+        <span id="v010TechDemoBadge" title="Early Alpha / Technical Preview (v0.1.1-alpha) — For testing and evaluation. Always back up your gamedata/MO2 profile." style="font-size:10.5px;color:#fbbf24;background:#451a03;padding:3px 7px;border-radius:4px;border:1px solid #d97706;font-weight:700;letter-spacing:0.3px;">ALPHA TECH DEMO v0.1.1</span>
         <button type="button" id="v010AutosaveBadge" title="Click to toggle Autosave ON / OFF" style="cursor:pointer;font-size:11px;color:#34d399;background:#064e3b;padding:4px 8px;border-radius:4px;border:1px solid #059669;font-weight:600;">${tr("autosave_ready")}</button>
         <button class="btn" id="btnV010Undo" title="Undo (Ctrl+Z)" style="padding:4px 8px;font-size:11px;">${tr("btn_undo")}</button>
         <button class="btn" id="btnV010Redo" title="Redo (Ctrl+Y)" style="padding:4px 8px;font-size:11px;">${tr("btn_redo")}</button>

@@ -198,8 +198,38 @@ LEVELS_BY_ADDON = {
     "anomaly153": json.loads((INDEX_DIR / "levels_index_anomaly153.json").read_text()) if (INDEX_DIR / "levels_index_anomaly153.json").is_file() else json.loads((INDEX_DIR / "levels_index.json").read_text()),
 }
 LEVELS_SUMMARY = LEVELS_BY_ADDON["anomaly153"]
-SPAWNS_PARSED_DIR = STUDIO_DIR / ".studio_cache" / "spawns_parsed"
-SPAWNS_SUMMARY = json.loads((SPAWNS_PARSED_DIR / "_summary.json").read_text()) if (SPAWNS_PARSED_DIR / "_summary.json").is_file() else {}
+SPAWNS_PARSED_DIR = INDEX_DIR / "spawns_parsed" if (INDEX_DIR / "spawns_parsed").is_dir() else (STUDIO_DIR / ".studio_cache" / "spawns_parsed")
+SPAWNS_CACHE_DIR = STUDIO_DIR / ".studio_cache" / "spawns_parsed"
+
+
+def _load_spawns_summary() -> dict:
+    for p in (SPAWNS_PARSED_DIR / "_summary.json", SPAWNS_CACHE_DIR / "_summary.json"):
+        if p.is_file():
+            try:
+                data = json.loads(p.read_text(encoding="utf-8"))
+                if isinstance(data, dict) and isinstance(data.get("levels"), dict):
+                    return data
+            except Exception:
+                pass
+    # Build summary dynamically from *_spawns.json if _summary.json is missing
+    levels_map = {}
+    total_sp = 0
+    for d in (SPAWNS_PARSED_DIR, SPAWNS_CACHE_DIR):
+        if d.is_dir():
+            for fp in sorted(d.glob("*_spawns.json")):
+                lvl_key = fp.name[:-len("_spawns.json")]
+                if lvl_key not in levels_map:
+                    try:
+                        arr = json.loads(fp.read_text(encoding="utf-8"))
+                        cnt = len(arr) if isinstance(arr, list) else 0
+                    except Exception:
+                        cnt = 0
+                    levels_map[lvl_key] = {"spawns": cnt}
+                    total_sp += cnt
+    return {"total_spawns": total_sp, "levels": levels_map}
+
+
+SPAWNS_SUMMARY = _load_spawns_summary()
 
 
 def resolve_level_dir(level_name: str, addon_id: str = None) -> Path:
@@ -824,7 +854,7 @@ def load_level_geom_binary_payload(level_name: str) -> bytes | None:
                     xform_16 = struct.unpack_from("<16f", ssub, 0)
                 elif scid == 21 and len(ssub) == 24:
                     gcont = struct.unpack_from("<6I", ssub, 0)
-            if not gcont or mtype not in (0, 2, 7, 11):
+            if not gcont or mtype not in (0, 2):
                 continue
             if mtype in (2, 11) and swi_s0 is not None and gcont[4] + swi_s0[0] + swi_s0[1] <= len(ib_slices[gcont[3]]):
                 gcont = (gcont[0], gcont[1], gcont[2], gcont[3], gcont[4] + swi_s0[0], swi_s0[1])
@@ -1883,10 +1913,21 @@ class StudioRequestHandler(SimpleHTTPRequestHandler):
         if path.startswith("/api/level_spawns/"):
             lvl = unquote(path.split("/api/level_spawns/")[1])
             file_key = lvl.replace(":", "_")
-            sp_file = SPAWNS_PARSED_DIR / f"{file_key}_spawns.json"
-            pt_file = SPAWNS_PARSED_DIR / f"{file_key}_patrols.json"
-            spawns = json.loads(sp_file.read_text()) if sp_file.is_file() else []
-            patrols = json.loads(pt_file.read_text()) if pt_file.is_file() else {}
+            sp_cache = SPAWNS_CACHE_DIR / f"{file_key}_spawns.json"
+            sp_base = SPAWNS_PARSED_DIR / f"{file_key}_spawns.json"
+            pt_file = (SPAWNS_PARSED_DIR / f"{file_key}_patrols.json") if (SPAWNS_PARSED_DIR / f"{file_key}_patrols.json").is_file() else (SPAWNS_CACHE_DIR / f"{file_key}_patrols.json")
+            spawns = []
+            for cand in (sp_cache, sp_base):
+                if cand.is_file() and cand.stat().st_size > 4:
+                    try:
+                        spawns = json.loads(cand.read_text(encoding="utf-8"))
+                        if isinstance(spawns, list) and len(spawns) > 0:
+                            break
+                    except Exception:
+                        pass
+            patrols = json.loads(pt_file.read_text(encoding="utf-8")) if pt_file.is_file() else []
+            if isinstance(patrols, dict):
+                patrols = list(patrols.values())
             self.send_json({"level": lvl, "spawns": spawns, "patrols": patrols})
             return
 
@@ -2314,9 +2355,10 @@ class StudioRequestHandler(SimpleHTTPRequestHandler):
             lvl = body.get("level", "")
             file_key = lvl.replace(":", "_")
             spawns = body.get("spawns", [])
-            sp_file = SPAWNS_PARSED_DIR / f"{file_key}_spawns.json"
-            if sp_file.is_file():
-                sp_file.write_text(json.dumps(spawns, indent=2, ensure_ascii=False))
+            SPAWNS_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+            sp_file = SPAWNS_CACHE_DIR / f"{file_key}_spawns.json"
+            if isinstance(spawns, list) and len(spawns) > 0:
+                sp_file.write_text(json.dumps(spawns, indent=2, ensure_ascii=False), encoding="utf-8")
             self.send_json({"ok": True, "level": lvl, "count": len(spawns)})
             return
 

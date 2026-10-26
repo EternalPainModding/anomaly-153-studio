@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Anomaly Studio v0.1.0-alpha — Direct .db0 Virtual File System (VFS) & Packer
+Anomaly Studio v0.1.1-alpha — Direct .db0 Virtual File System (VFS) & Packer
 ============================================================================
 Reads and packs S.T.A.L.K.E.R. Anomaly 1.5.3 `.db0` archives directly from the
 user's installation (`<anomaly_path>/db/**/*.db*` and `<anomaly_path>/mods/*.db*`)
@@ -366,7 +366,7 @@ def pack_directory_to_db0(source_dir: Path, output_db0: Path, header_prefix: str
         "level_name = single\r\n"
         "level_ver = 1.0\r\n"
         "entry_point = $fs_root$\\gamedata\\\r\n"
-        "creator = \"Anomaly Studio v0.1.0-alpha (EternalPain)\"\r\n"
+        "creator = \"Anomaly Studio v0.1.1-alpha (EternalPain)\"\r\n"
         "link = \"https://discord.com\"\r\n"
     )
     if header_prefix:
