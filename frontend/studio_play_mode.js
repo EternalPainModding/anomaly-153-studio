@@ -1592,12 +1592,18 @@
 
  // Main animation loop for Play Mode physics
  function pieLoop(now) {
+ if (document.hidden) {
+ setTimeout(() => requestAnimationFrame(pieLoop), 500);
+ return;
+ }
+ if (!pieState.active) {
+ setTimeout(() => requestAnimationFrame(pieLoop), 200);
+ return;
+ }
  requestAnimationFrame(pieLoop);
  const dt = Math.min(0.05, Math.max(0.001, (now - pieState.lastFrameTime) / 1000));
  pieState.lastFrameTime = now;
- if (pieState.active) {
  stepPlayModePhysics(dt);
- }
  }
 
  function initPieExtension() {
